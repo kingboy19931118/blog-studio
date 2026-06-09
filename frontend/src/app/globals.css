@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+@layer components {
+  .prose-blog {
+    @apply prose prose-lg max-w-none
+      prose-headings:font-bold
+      prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline
+      prose-code:bg-gray-100 prose-code:rounded prose-code:px-1
+      prose-pre:bg-gray-900 prose-pre:text-gray-100;
+  }
+  .dark .prose-blog {
+    @apply prose-dark;
+  }
+}
+
+/* Syntax highlight overrides */
+.hljs {
+  background: transparent !important;
+}
