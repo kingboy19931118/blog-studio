@@ -38,9 +38,9 @@ type PostsResponse struct {
 func (h *PostHandler) List(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
-	category := c.Query("category")   // slug
+	category := c.Query("category") // slug
 	search := c.Query("search")
-	status := c.Query("status")       // empty = published only (public), "all" = all (admin)
+	status := c.Query("status") // empty = published only (public), "all" = all (admin)
 
 	if page < 1 {
 		page = 1
@@ -53,6 +53,10 @@ func (h *PostHandler) List(c *gin.Context) {
 
 	// Public endpoint only shows published posts unless admin requests all
 	if status == "all" {
+		if _, authenticated := c.Get("userID"); !authenticated {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "authentication required for all posts"})
+			return
+		}
 		// allowed (caller must be authenticated — route-level guard)
 	} else {
 		query = query.Where("status = ?", models.StatusPublished)
@@ -62,6 +66,8 @@ func (h *PostHandler) List(c *gin.Context) {
 		var cat models.Category
 		if err := database.DB.Where("slug = ?", category).First(&cat).Error; err == nil {
 			query = query.Where("category_id = ?", cat.ID)
+		} else {
+			query = query.Where("1 = 0")
 		}
 	}
 

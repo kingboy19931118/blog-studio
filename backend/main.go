@@ -43,6 +43,7 @@ func main() {
 	uploadH := handlers.NewUploadHandler(uploadsAbs, cfg.MaxUploadSizeMB)
 
 	auth := middleware.AuthRequired(cfg.JWTSecret)
+	optionalAuth := middleware.OptionalAuth(cfg.JWTSecret)
 
 	api := r.Group("/api")
 	{
@@ -57,7 +58,7 @@ func main() {
 		api.DELETE("/categories/:id", auth, catH.Delete)
 
 		// Posts (read is public, write needs auth)
-		api.GET("/posts", postH.List)
+		api.GET("/posts", optionalAuth, postH.List)
 		api.GET("/posts/:slug", postH.Get)
 		api.POST("/posts", auth, postH.Create)
 		api.PUT("/posts/:id", auth, postH.Update)
