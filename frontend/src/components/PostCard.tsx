@@ -23,6 +23,7 @@ export default function PostCard({ post, featured = false }: Props) {
                 src={getImageUrl(post.cover_image)}
                 alt={post.title}
                 fill
+                unoptimized
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
             ) : (
@@ -62,6 +63,7 @@ export default function PostCard({ post, featured = false }: Props) {
               src={getImageUrl(post.cover_image)}
               alt={post.title}
               fill
+              unoptimized
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (

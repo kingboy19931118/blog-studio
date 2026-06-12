@@ -87,5 +87,5 @@ export const uploadFile = (file: File) => {
 export const getImageUrl = (path: string) => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
-  return `${BASE_URL}${path}`;
+  return path.startsWith('/') ? path : `/${path}`;
 };
